@@ -1,0 +1,712 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="4/13/2017 10:59:51 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="PC235"
+  DTS:CreatorName="WBOOLWATER\craig.roberts"
+  DTS:DTSID="{CEEC55C0-8C3C-4173-8B50-E6B1407049AC}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LocaleID="3081"
+  DTS:ObjectName="01-GetNewDataFromWonderWare"
+  DTS:PackageType="5"
+  DTS:VersionBuild="13"
+  DTS:VersionGUID="{D09FFB1E-EF6E-4CA9-9D97-627BCBB5BD62}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Get Average Values from Wonderware"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{af2489f8-82bd-49ac-b7ee-4a4852ea30b8}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get Average Values from Wonderware"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Get the Data From Wonderware"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">declare @dateT date
+declare @dateT2 date
+set @dateT = DateAdd (day, -1,GetDate()) 
+set @dateT2 = (Getdate())
+
+--select @dateT,@dateT2
+--select * from AnalogHistory where tagname = 'Water.Balmoral.Balmoral WTP.Equipment.Treated Flow.Value.Historic'
+select  tagname,@datet as Date, avg(value) as Value from AnalogHistory where tagname in ( 'Water.Cobden.Cobden WTP.Equipment.Outflow.Value.Historic',
+'Water.Warrnambool.Allansford Standpipe.Equipment.Outflow.Value.Historic',
+'Water.Caramut.Caramut Tank and WQS.Equipment.Outflow.Value.Historic',
+'Water.Cavendish.Cavendish CI Basin.Equipment.Outflow.Value.Historic',
+'Water.Glenthompson.Glenthompson CI WTP.Equipment.Outflow.Value.Historic',
+'Water.Merino.Merino Basin.Equipment.Outflow.Value.Historic',
+'Water.Balmoral.Balmoral WTP.Equipment.Treated Flow.Value.Historic',
+'Water.Port Fairy.Port Fairy HLST.Equipment.Values.Outflow From HLST.Historic',
+'Water.Coleraine.Coleraine Tank.Equipment.Outflow.Value.Historic',
+'Water.Camperdown.Camperdown WTP.Equipment.CWST Outflow.Value.Historic',
+'Water.Koroit.Koroit Basin.Equipment.Outflow.Value.Historic',
+'Water.Penshurst.Hawksdale Rd Emergency Bore.Equipment.Outflow.Value.Historic',
+'Water.Mortlake.Mortlake WTP Repeater.Equipment.Outflow.Value.Historic',
+'Water.Camperdown.Ettrick Springs.Equipment.Outflow.Value.Historic',
+'Water.Dunkeld.Dunkeld CI.Equipment.Outflow.Value.Historic',
+'Water.Casterton.Casterton WTP.Equipment.Outflow.Value.Historic',
+'Water.Simpson.Simpson WTP.Equipment.Outflow.Value.Historic',
+'Water.Port Campbell.Brumbys Rd Tank.Equipment.Outflow.Value.Historic',
+'Water.Macarthur.Macarthur WTP.Equipment.Values.Outflow.Value.Historic',
+'Water.Dartmoor.Wanwin St WPS.Equipment.Reticulation Flow Meter.Value.Historic',
+'Water.sute Sentinels.Tarrington Flow Meter.Flow.Historic',
+'Water.Port Campbell.Port Campbell HLST.Equipment.Outflow.Value.Historic'
+)
+AND wwRetrievalMode = 'Cyclic'
+--AND wwCycleCount = 30
+AND wwQualityRule = 'Extended'
+AND wwVersion = 'Latest'
+and [datetime] &gt;=@dateT and [datetime] &lt;@dateT2
+and  datepart(hh,[Datetime]) &gt;= 0 
+and datepart(hh,[datetime]) &lt; 5
+group by TagName</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Connections[OleDbConnection]"
+                  connectionManagerID="{508E99A2-1E32-41BA-97B5-C5B9EA6C6FE7}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SWSVR07.Runtime]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].Columns[Value]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].ExternalColumns[Value]"
+                      lineageId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].Columns[Value]"
+                      name="Value"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].Columns[Date]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].ExternalColumns[Date]"
+                      lineageId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].Columns[Date]"
+                      name="Date"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].Columns[tagname]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].ExternalColumns[tagname]"
+                      length="256"
+                      lineageId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].Columns[tagname]"
+                      name="tagname"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].ExternalColumns[Value]"
+                      dataType="r8"
+                      name="Value" />
+                    <externalMetadataColumn
+                      refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].ExternalColumns[Date]"
+                      dataType="dbDate"
+                      name="Date" />
+                    <externalMetadataColumn
+                      refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].ExternalColumns[tagname]"
+                      dataType="wstr"
+                      length="256"
+                      name="tagname" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Error Output].Columns[tagname]"
+                      dataType="wstr"
+                      length="256"
+                      lineageId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Error Output].Columns[tagname]"
+                      name="tagname" />
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Error Output].Columns[Date]"
+                      dataType="dbDate"
+                      lineageId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Error Output].Columns[Date]"
+                      name="Date" />
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Error Output].Columns[Value]"
+                      dataType="r8"
+                      lineageId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Error Output].Columns[Value]"
+                      name="Value" />
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Get Average Values from Wonderware\Lookup"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[SCADA_NightFlows_Data]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[SCADA_NightFlows_Data]) [refTable]
+where [refTable].[RecordTime] = ? and [refTable].[tagname] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="RecordTime" dataType="DT_DBDATE" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="tagname" dataType="DT_WSTR" length="255" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Value" dataType="DT_R8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].Columns[Date]};#{Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].Columns[tagname]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Get Average Values from Wonderware\Lookup.Connections[OleDbConnection]"
+                  connectionManagerID="{113F04BC-F218-47AA-A1AF-D8384E120B66}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[swsvr92.GeneralDataExtracts]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Get Average Values from Wonderware\Lookup.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Get Average Values from Wonderware\Lookup.Inputs[Lookup Input].Columns[tagname]"
+                      cachedDataType="wstr"
+                      cachedLength="256"
+                      cachedName="tagname"
+                      lineageId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].Columns[tagname]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">tagname</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Get Average Values from Wonderware\Lookup.Inputs[Lookup Input].Columns[Date]"
+                      cachedDataType="dbDate"
+                      cachedName="Date"
+                      lineageId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].Columns[Date]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">RecordTime</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Get Average Values from Wonderware\Lookup.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="RedirectRow"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Get Average Values from Wonderware\Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\Lookup.Outputs[Lookup Match Output].Columns[RecordTime]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\Get Average Values from Wonderware\Lookup.Outputs[Lookup Match Output].Columns[RecordTime]"
+                      name="RecordTime"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">RecordTime</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\Lookup.Outputs[Lookup Match Output].Columns[tagname]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="255"
+                      lineageId="Package\Get Average Values from Wonderware\Lookup.Outputs[Lookup Match Output].Columns[tagname]"
+                      name="tagname"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">tagname</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Get Average Values from Wonderware\Lookup.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Get Average Values from Wonderware\Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Get Average Values from Wonderware\Lookup.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Get Average Values from Wonderware\Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Get Average Values from Wonderware\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Get Average Values from Wonderware\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Get Average Values from Wonderware\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[SCADA_NightFlows_Data]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Get Average Values from Wonderware\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="{113F04BC-F218-47AA-A1AF-D8384E120B66}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[swsvr92.GeneralDataExtracts]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Get Average Values from Wonderware\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Get Average Values from Wonderware\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Value]"
+                      cachedDataType="r8"
+                      cachedName="Value"
+                      externalMetadataColumnId="Package\Get Average Values from Wonderware\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Value]"
+                      lineageId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].Columns[Value]" />
+                    <inputColumn
+                      refId="Package\Get Average Values from Wonderware\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Date]"
+                      cachedDataType="dbDate"
+                      cachedName="Date"
+                      externalMetadataColumnId="Package\Get Average Values from Wonderware\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RecordTime]"
+                      lineageId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].Columns[Date]" />
+                    <inputColumn
+                      refId="Package\Get Average Values from Wonderware\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[tagname]"
+                      cachedDataType="wstr"
+                      cachedLength="256"
+                      cachedName="tagname"
+                      externalMetadataColumnId="Package\Get Average Values from Wonderware\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[tagname]"
+                      lineageId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output].Columns[tagname]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Get Average Values from Wonderware\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RecordTime]"
+                      dataType="dbDate"
+                      name="RecordTime" />
+                    <externalMetadataColumn
+                      refId="Package\Get Average Values from Wonderware\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[tagname]"
+                      dataType="wstr"
+                      length="255"
+                      name="tagname" />
+                    <externalMetadataColumn
+                      refId="Package\Get Average Values from Wonderware\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Value]"
+                      dataType="r8"
+                      name="Value" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Get Average Values from Wonderware\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Get Average Values from Wonderware\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Get Average Values from Wonderware\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Get Average Values from Wonderware\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Get Average Values from Wonderware\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Get Average Values from Wonderware.Paths[Lookup Error Output]"
+              endId="Package\Get Average Values from Wonderware\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Lookup Error Output"
+              startId="Package\Get Average Values from Wonderware\Lookup.Outputs[Lookup Error Output]" />
+            <path
+              refId="Package\Get Average Values from Wonderware.Paths[OLE DB Source Output]"
+              endId="Package\Get Average Values from Wonderware\Lookup.Inputs[Lookup Input]"
+              name="OLE DB Source Output"
+              startId="Package\Get Average Values from Wonderware\Get the Data From Wonderware.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="259,42"
+          Id="Package\Get Average Values from Wonderware"
+          TopLeft="371,81" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Get Average Values from Wonderware">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="230,42"
+          Id="Package\Get Average Values from Wonderware\Get the Data From Wonderware"
+          TopLeft="89,75" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Get Average Values from Wonderware\OLE DB Destination"
+          TopLeft="468,256" />
+        <NodeLayout
+          Size="113,42"
+          Id="Package\Get Average Values from Wonderware\Lookup"
+          TopLeft="471,83" />
+        <EdgeLayout
+          Id="Package\Get Average Values from Wonderware.Paths[OLE DB Source Output]"
+          TopLeft="319,96">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="152,8"
+              Start="0,0"
+              End="144.5,8">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="72,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="72,0"
+                    Point2="76,0"
+                    Point3="76,4" />
+                  <mssgle:LineSegment
+                    End="76,4" />
+                  <mssgle:CubicBezierSegment
+                    Point1="76,4"
+                    Point2="76,8"
+                    Point3="80,8" />
+                  <mssgle:LineSegment
+                    End="144.5,8" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Get Average Values from Wonderware.Paths[Lookup Error Output]"
+          TopLeft="527.5,125">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="26,131"
+              Start="0,0"
+              End="26,123.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,61.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,61.5"
+                    Point2="0,65.5"
+                    Point3="4,65.5" />
+                  <mssgle:LineSegment
+                    End="22,65.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="22,65.5"
+                    Point2="26,65.5"
+                    Point3="26,69.5" />
+                  <mssgle:LineSegment
+                    End="26,123.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-32.86638671875,70.5,91.7327734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Get Average Values from Wonderware\Get the Data From Wonderware">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Get Average Values from Wonderware\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Get Average Values from Wonderware\Lookup">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[SCADA_NightFlows_Data]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
